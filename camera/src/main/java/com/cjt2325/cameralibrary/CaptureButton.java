@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -146,28 +147,37 @@ public class CaptureButton extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                LogUtil.i("state = " + state);
-                if (event.getPointerCount() > 1 || state != STATE_IDLE)
-                    break;
-                event_Y = event.getY();     //记录Y值
-                state = STATE_PRESS;        //修改当前状态为点击按下
+                Log.e("Capture state",state+"");
+                if (state == STATE_PRESS||state == STATE_RECORDERING){
+                    state = STATE_RECORDERING;
+                    handlerUnpressByState();
+                    Log.e("Capture","handlerUnpressByState");
+                }else {
+                    Log.e("Capture","getPointerCount");
+                    LogUtil.i("state = " + state);
+                    if (event.getPointerCount() > 1 || state != STATE_IDLE)
+                        break;
+                    event_Y = event.getY();     //记录Y值
+                    state = STATE_PRESS;        //修改当前状态为点击按下
 
-                //判断按钮状态是否为可录制状态
-                if ((button_state == BUTTON_STATE_ONLY_RECORDER || button_state == BUTTON_STATE_BOTH))
-                    postDelayed(longPressRunnable, 500);    //同时延长500启动长按后处理的逻辑Runnable
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (captureLisenter != null
-                        && state == STATE_RECORDERING
-                        && (button_state == BUTTON_STATE_ONLY_RECORDER || button_state == BUTTON_STATE_BOTH)) {
-                    //记录当前Y值与按下时候Y值的差值，调用缩放回调接口
-                    captureLisenter.recordZoom(event_Y - event.getY());
+                    //判断按钮状态是否为可录制状态
+                    if ((button_state == BUTTON_STATE_ONLY_RECORDER || button_state == BUTTON_STATE_BOTH))
+                        postDelayed(longPressRunnable, 500);    //同时延长500启动长按后处理的逻辑Runnable
                 }
+
                 break;
-            case MotionEvent.ACTION_UP:
-                //根据当前按钮的状态进行相应的处理
-                handlerUnpressByState();
-                break;
+//            case MotionEvent.ACTION_MOVE:
+//                if (captureLisenter != null
+//                        && state == STATE_RECORDERING
+//                        && (button_state == BUTTON_STATE_ONLY_RECORDER || button_state == BUTTON_STATE_BOTH)) {
+//                    //记录当前Y值与按下时候Y值的差值，调用缩放回调接口
+//                    captureLisenter.recordZoom(event_Y - event.getY());
+//                }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                //根据当前按钮的状态进行相应的处理
+//                handlerUnpressByState();
+//                break;
         }
         return true;
     }

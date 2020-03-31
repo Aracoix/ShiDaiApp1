@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.cjt2325.cameralibrary.JCameraView;
-import com.cjt2325.cameralibrary.lisenter.JCameraLisenter;
+//import com.cjt2325.cameralibrary.lisenter.JCameraLisenter;
 
 import java.io.File;
 
@@ -33,27 +33,27 @@ public class MainActivity extends AppCompatActivity {
 
         //设置视频保存路径
         jCameraView.setSaveVideoPath(Environment.getExternalStorageDirectory().getPath() + File.separator + "JCamera");
-
-        //JCameraView监听
-        jCameraView.setJCameraLisenter(new JCameraLisenter() {
-            @Override
-            public void captureSuccess(Bitmap bitmap) {
-                //获取图片bitmap
-                Log.i("JCameraView", "bitmap = " + bitmap.getWidth());
-            }
-
-            @Override
-            public void recordSuccess(String url, Bitmap firstFrame) {
-
-            }
-
-
-            @Override
-            public void quit() {
-                //退出按钮
-                MainActivity.this.finish();
-            }
-        });
+//
+//        //JCameraView监听
+//        jCameraView.setJCameraLisenter(new JCameraLisenter() {
+//            @Override
+//            public void captureSuccess(Bitmap bitmap) {
+//                //获取图片bitmap
+//                Log.i("JCameraView", "bitmap = " + bitmap.getWidth());
+//            }
+//
+//            @Override
+//            public void recordSuccess(String url, Bitmap firstFrame) {
+//
+//            }
+//
+//
+//            @Override
+//            public void quit() {
+//                //退出按钮
+//                MainActivity.this.finish();
+//            }
+//        });
         //6.0动态权限获取
         getPermissions();
     }
